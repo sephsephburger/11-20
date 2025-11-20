@@ -18,36 +18,36 @@
 - [x] Save data in database
 
 ## P1: Post classification
-- Write caption rule checks for type tags
-- Tag posts with simple labels
-- Store tags in database
+- [x] Write caption rule checks for type tags
+- [x] Tag posts with simple labels
+- [x] Store tags in database
 
 ## P1: Comment based post check
-- Write regex to find comment cues
-- Extract keyword when possible
-- Store keyword and status state
+- [x] Write regex to find comment cues
+- [x] Extract keyword when possible
+- [x] Store keyword and status state
 
 ## P1: Post card
-- Build card UI for each post
-- Show thumbnail, creator, tags, status
-- Add action buttons for copy keyword and add link
+- [x] Build card UI for each post
+- [x] Show thumbnail, creator, tags, status
+- [x] Add action buttons for copy keyword and add link
 
 ## P1: Resource link flow
-- Add field for user to paste resource link
-- Update status to received
-- Save link to database
+- [x] Add field for user to paste resource link
+- [x] Update status to received
+- [x] Save link to database
 
 ## P1: List view
-- Show all saved posts on main page
-- Add sorting or simple grouping
-- Error states for empty list
+- [x] Show all saved posts on main page
+- [x] Add sorting or simple grouping
+- [x] Error states for empty list
 
 ## P2: UX improvement
-- Add loading states
-- Add small success indicators
-- Add basic empty state text
+- [x] Add loading states
+- [x] Add small success indicators
+- [x] Add basic empty state text
 
 ## P2: Style pass
-- Clean card layout
-- Improve spacing
-- Apply simple color theme
+- [x] Clean card layout
+- [x] Improve spacing
+- [x] Apply simple color theme

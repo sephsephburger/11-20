@@ -16,7 +16,7 @@ This repository is organized around a daily sprint for `11-20`. All contributors
 ## Development, Build, and Test
 
 - This repo currently has no code or build system defined.
-- When you introduce code, add a short “How to run / test” section to `PRD.md` and update this file with key commands (for example: `npm test`, `python -m pytest`, or `npm run dev`).
+- When you introduce code, add a short "How to run / test" section to `PRD.md` and update this file with key commands (for example: `npm test`, `python -m pytest`, or `npm run dev`).
 
 ## Coding Style & Naming
 
@@ -34,8 +34,13 @@ This repository is organized around a daily sprint for `11-20`. All contributors
 
 - Use concise, present-tense commit messages (e.g., `Add P1 login flow`).
 - Scope each commit to a small, logical change set.
+- Git commit best practices:
+  - Keep commits atomic (one logical change) and avoid mixing refactors with functional changes.
+  - Reference related TODO items in the commit body when relevant.
+  - Do not commit generated artifacts (for example: `.next/`, `node_modules/`, local DB dumps); lockfiles are okay.
+  - Run available tests or linters before committing and note results in the PR description when applicable.
+  - Prefer rebasing onto the latest main before opening a PR to reduce merge noise.
 - Pull requests should:
   - Reference relevant TODO items.
   - Briefly describe the change and rationale.
   - Include screenshots or logs when UI or behavior changes.
-
