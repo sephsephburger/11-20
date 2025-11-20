@@ -44,7 +44,8 @@ Based on casual interviews with users who follow study or work related Instagram
 - Use oEmbed or fallback fetch for metadata  
 - Must avoid Instagram automation  
 - Should work even if metadata is incomplete  
-- Must run with minimal setup for a demo
+- Must run with minimal setup for a demo  
+- When deploying to serverless (e.g., Vercel), SQLite writes use `/tmp` by default or `DATA_DIR` override.
 
 ## Key use cases  
 1. **Save a post by URL**  

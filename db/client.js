@@ -2,14 +2,15 @@ import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 
-const dbFilePath = path.join(process.cwd(), 'data', 'app.db');
+const dataDir =
+  process.env.DATA_DIR ||
+  (process.env.VERCEL ? '/tmp/insta-resource' : path.join(process.cwd(), 'data'));
+const dbFilePath = path.join(dataDir, 'app.db');
 const schemaFilePath = path.join(process.cwd(), 'db', 'schema.sql');
 
 function ensureDatabase() {
-  const dbDir = path.dirname(dbFilePath);
-
-  if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true });
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
   }
 
   const db = new Database(dbFilePath);
@@ -27,4 +28,3 @@ export function getDb() {
   }
   return dbInstance;
 }
-

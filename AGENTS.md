@@ -23,6 +23,7 @@ This repository is organized around a daily sprint for `11-20`. All contributors
 - Match the language ecosystem you introduce (e.g., Prettier/ESLint for JS, `black`/`ruff` for Python).
 - Prefer clear, descriptive names over abbreviations.
 - Keep functions small, single-responsibility, and colocate tests near implementation when practical.
+- For SQLite use `/tmp` when running in serverless (e.g., Vercel); override with `DATA_DIR` locally if needed.
 
 ## Testing Guidelines
 
