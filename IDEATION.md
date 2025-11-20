@@ -1,3 +1,6 @@
+# Insta Resource Box
+One-line description: A simple tool that collects Instagram posts and their linked resources in one clean place.
+
 # IDEATION.md
 
 ## Raw Idea  
@@ -15,8 +18,8 @@ There is no simple way to collect these posts, track which ones require a commen
 ---
 
 ## Target User  
-- Students and workers who follow many instructional or resource-heavy Instagram accounts  
-- Users who comment on posts to get PDFs, Notion templates, or tool lists  
+- Students and workers who follow many instructional or resource-focused Instagram accounts  
+- Users who comment on posts to get PDFs, templates, or tool lists  
 - People who want a clean personal library of posts and the resources behind them  
 
 ---
@@ -61,17 +64,17 @@ The app shows a clean dashboard listing all saved posts with fields such as:
 ---
 
 ## Solution Hypothesis  
-If users can organize Instagram posts and their related resources with a simple paste action, they will reuse more of what they save.  
-If the app detects and simplifies “comment-to-get” steps, users will waste less time tracking resources across DMs.
+If users can organize Instagram posts and their related resources with a simple paste action, they will keep better track of useful content.  
+If the app detects and simplifies “comment-to-get” steps, users will spend less time hunting for links across DMs.
 
 ---
 
 ## Core Value Proposition  
-- Central place for Instagram posts and their attached resources  
+- One place for Instagram posts and their linked resources  
 - Simple paste-based input  
 - Auto detection of comment-gate posts  
-- Semi manual interaction flow that feels guided and fast  
-- Clear list of collected resources and their states
+- Semi manual workflow that keeps the process fast  
+- Clear view of collected resources and their states
 
 ---
 
@@ -90,8 +93,8 @@ Must have:
 Nice to have:  
 - Tag filters  
 - Simple search  
-- Show suggested comment text for quick copy  
-- Field for user to paste the final DM resource link  
+- Suggested comment text  
+- Field for user to add the final DM resource link  
 
 Not in scope (for MVP):  
 - Real Instagram login  
@@ -112,12 +115,12 @@ Paste → Save → Classify → Track.
 - Next.js  
 - API routes  
 - Simple DB  
-- Unreliable Instagram API, so fallback paths may be needed (mock metadata)
+- Instagram metadata may require fallback or mock data
 
 ### Rules  
-- Instagram automation is not used in MVP  
-- All auto actions are deferred to future versions  
-- Semi manual agent flow is acceptable, safe, and demo friendly
+- No Instagram automation in MVP  
+- All automated actions moved to future versions  
+- Semi manual flow is safe and simple for demo use
 
 ---
 
@@ -125,48 +128,44 @@ Paste → Save → Classify → Track.
 - Readwise Reader for content collection  
 - Notion Web Clipper for fast saves  
 - Google Keep for lightweight structure  
-- Instagram growth accounts that use “comment keyword” funnels  
+- Instagram creator funnels that use keyword-comment patterns  
 
-These inspire the structure and behavior of this app.
+These guide the structure of the app.
 
 ---
 
 ## Agentic Workflow Plan  
 
 ### Level 1 (MVP)  
-Semi manual agent:  
+Semi manual agent flow:  
 - Detect keyword  
-- Copy keyword to clipboard  
-- User pastes the comment manually  
+- Copy keyword  
+- User comments manually  
 - User pastes DM link back into the app  
-- App tracks states and organizes the final resource  
+- App tracks states
 
-### Level 2 (Stretch, future spec)  
-Agent auto comments using a dummy test account:  
-- Script posts the comment keyword  
-- DM received on dummy account  
-- DM link copied manually into app  
+### Level 2 (Future)  
+Automated commenting using a dummy test account:  
+- Script posts the keyword  
+- DM arrives  
+- Link is copied manually into the app
 
-### Level 3 (Full automation, future)  
-Full automated pipeline using dummy business account:  
-- Auto comment from the dummy account  
+### Level 3 (Future)  
+Full automated workflow using a dummy business account:  
+- Auto comment  
 - Auto detect DM arrival  
-- Auto parse link and store it  
-This requires approved Meta API or advanced headless automation.
+- Parse link and store it  
+(This depends on approved APIs or advanced automation.)
 
 ---
 
 ## PRD Writing Guide  
-1. Define the core user problem in one clear line.  
-2. Describe the main flows:  
-   - Paste URL  
-   - Classify  
-   - Detect gated content  
-   - Semi manual agent flow  
-3. Separate features into Must, Nice, Later.  
-4. Define a simple data model for posts.  
-5. Add edge cases like private posts or empty captions.  
-6. Write demo success criteria tied to MVP.  
-7. Note the future automated workflow for the dummy account.
+1. Start with a clear problem statement.  
+2. Write the main flows: paste URL, classify, detect gating, track status.  
+3. Mark each feature as Must, Nice, or Later.  
+4. Include a simple data model.  
+5. Add edge cases like private posts or missing captions.  
+6. Define demo success criteria.  
+7. Note the future automated workflow.
 
 ---
