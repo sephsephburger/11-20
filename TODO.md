@@ -7,9 +7,9 @@
 - [x] Create simple schema for posts table
 
 ## P1: URL input and validation
-- Build top input field for Instagram URL
-- Add URL checker
-- Add error states for invalid or private posts
+- [x] Build top input field for Instagram URL
+- [x] Add URL checker
+- [x] Add error states for invalid or private posts
 
 ## P1: Metadata fetch
 - Connect to oEmbed fetch
