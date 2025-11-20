@@ -1,10 +1,10 @@
 # TODO.md
 
 ## P1: Project setup
-- Set up Next.js project
-- Add basic routing for main page
-- Install Supabase or SQLite client
-- Create simple schema for posts table
+- [x] Set up Next.js project
+- [x] Add basic routing for main page
+- [x] Install Supabase or SQLite client
+- [x] Create simple schema for posts table
 
 ## P1: URL input and validation
 - Build top input field for Instagram URL
