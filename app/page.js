@@ -1,94 +1,57 @@
 "use client";
 
 import { useState } from 'react';
-
-const allowedHosts = ['instagram.com', 'instagr.am'];
-const allowedPaths = ['p', 'reel', 'tv'];
-
-function evaluateInstagramUrl(raw) {
-  const trimmed = raw.trim();
-  if (!trimmed) {
-    return {
-      type: 'error',
-      code: 'empty',
-      message: 'Paste a public Instagram post link to continue.'
-    };
-  }
-
-  let urlObject;
-  try {
-    urlObject = new URL(trimmed);
-  } catch {
-    return {
-      type: 'error',
-      code: 'invalid-url',
-      message: 'Enter a full URL starting with http(s).'
-    };
-  }
-
-  const hostname = urlObject.hostname.replace(/^www\./, '');
-  if (!allowedHosts.includes(hostname)) {
-    return {
-      type: 'error',
-      code: 'invalid-host',
-      message: 'Use an instagram.com link (post, reel, or TV).'
-    };
-  }
-
-  const parts = urlObject.pathname.split('/').filter(Boolean);
-  if (parts.length < 2) {
-    return {
-      type: 'error',
-      code: 'missing-slug',
-      message: 'Use a post permalink such as /p/<id> or /reel/<id>.'
-    };
-  }
-
-  const kind = parts[0];
-  const slug = parts[1];
-  if (!allowedPaths.includes(kind)) {
-    return {
-      type: 'error',
-      code: 'private-or-unsupported',
-      message:
-        'This looks like profile or gated content. Use a public post, reel, or IGTV link.'
-    };
-  }
-
-  if (!slug || slug.length < 5) {
-    return {
-      type: 'error',
-      code: 'short-slug',
-      message: 'The post ID looks incomplete; double-check the link.'
-    };
-  }
-
-  const privateFlag =
-    urlObject.searchParams.get('private') === 'true' ||
-    urlObject.searchParams.get('is_private') === '1';
-  if (privateFlag) {
-    return {
-      type: 'error',
-      code: 'private-flag',
-      message: 'This post appears private or requires login. Make it public before adding.'
-    };
-  }
-
-  return {
-    type: 'success',
-    code: 'ok',
-    message: 'Looks good. Next step: fetch metadata and store the post.'
-  };
-}
+import { validateInstagramUrl } from '../lib/validateInstagramUrl';
 
 export default function HomePage() {
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [post, setPost] = useState(null);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const result = evaluateInstagramUrl(url);
+    setPost(null);
+
+    const result = validateInstagramUrl(url);
     setStatus(result);
+    if (result.type !== 'success') return;
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        setStatus({
+          type: 'error',
+          code: payload.code || 'fetch-failed',
+          message: payload.error || 'Could not fetch metadata. Try again.'
+        });
+        return;
+      }
+
+      setStatus({
+        type: 'success',
+        code: 'stored',
+        message: 'Fetched metadata and saved the post.'
+      });
+      setPost(payload.post);
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        code: 'network',
+        message: 'Network error while fetching metadata.'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const statusTone = {
@@ -121,9 +84,10 @@ export default function HomePage() {
               onChange={(event) => setUrl(event.target.value)}
               style={styles.input}
               autoComplete="off"
+              disabled={isLoading}
             />
-            <button type="submit" style={styles.button}>
-              Check URL
+            <button type="submit" style={styles.button} disabled={isLoading}>
+              {isLoading ? 'Fetching...' : 'Fetch & Save'}
             </button>
           </div>
           <p style={styles.helper}>
@@ -146,6 +110,35 @@ export default function HomePage() {
               {status.type === 'success' ? 'Ready' : 'Issue detected'}
             </strong>
             <span>{status.message}</span>
+          </div>
+        )}
+
+        {post && (
+          <div style={styles.preview}>
+            <div style={styles.previewHeader}>
+              <div>
+                <div style={styles.previewLabel}>Saved post</div>
+                <div style={styles.previewTitle}>{post.creator_name || 'Unknown creator'}</div>
+              </div>
+              <span style={styles.previewSource}>{post.source || 'oembed'}</span>
+            </div>
+            <div style={styles.previewBody}>
+              {post.thumbnail_url ? (
+                <img
+                  src={post.thumbnail_url}
+                  alt={post.caption || 'Instagram post thumbnail'}
+                  style={styles.previewImage}
+                />
+              ) : (
+                <div style={styles.previewImagePlaceholder}>No image in metadata</div>
+              )}
+              <div>
+                <div style={styles.previewUrl}>{post.instagram_url}</div>
+                <div style={styles.previewCaption}>
+                  {post.caption || 'No caption found for this post.'}
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </section>
@@ -213,7 +206,8 @@ const styles = {
     color: '#fff',
     fontWeight: 600,
     cursor: 'pointer',
-    minWidth: '120px'
+    minWidth: '120px',
+    opacity: 1
   },
   helper: {
     margin: 0,
@@ -227,5 +221,68 @@ const styles = {
     border: '1px solid',
     backgroundColor: '#eef3fc',
     fontSize: '0.98rem'
+  },
+  preview: {
+    marginTop: '1.2rem',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '1rem',
+    background: '#fafbff'
+  },
+  previewHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '0.75rem'
+  },
+  previewLabel: {
+    fontSize: '0.9rem',
+    color: '#6b7280'
+  },
+  previewTitle: {
+    marginTop: '0.15rem',
+    fontWeight: 700
+  },
+  previewSource: {
+    background: '#111827',
+    color: '#fff',
+    borderRadius: '999px',
+    padding: '0.25rem 0.75rem',
+    fontSize: '0.85rem'
+  },
+  previewBody: {
+    display: 'flex',
+    gap: '0.85rem',
+    alignItems: 'flex-start'
+  },
+  previewImage: {
+    width: 120,
+    height: 120,
+    objectFit: 'cover',
+    borderRadius: '10px',
+    border: '1px solid #e5e7eb',
+    background: '#fff'
+  },
+  previewImagePlaceholder: {
+    width: 120,
+    height: 120,
+    borderRadius: '10px',
+    border: '1px dashed #d1d5db',
+    color: '#9ca3af',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '0.9rem'
+  },
+  previewUrl: {
+    fontSize: '0.9rem',
+    color: '#4b5563',
+    wordBreak: 'break-all',
+    marginBottom: '0.4rem'
+  },
+  previewCaption: {
+    fontSize: '1rem',
+    color: '#111827',
+    lineHeight: 1.5
   }
 };

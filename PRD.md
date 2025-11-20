@@ -94,6 +94,11 @@ A single page shows all posts. Each card includes:
 - Status: not requested, requested, received  
 - Resource link if added  
 
+## How to run / test
+- Use Node 20.18.0 (`nvm use 20.18.0`)
+- Install dependencies: `npm install`
+- Start dev server: `npm run dev`
+
 ## Research  
 ### User Research  
 #### How do users save posts today  

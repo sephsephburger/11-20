@@ -12,10 +12,10 @@
 - [x] Add error states for invalid or private posts
 
 ## P1: Metadata fetch
-- Connect to oEmbed fetch
-- Fall back to basic fetch when needed
-- Parse thumbnail, caption, creator name
-- Save data in database
+- [x] Connect to oEmbed fetch
+- [x] Fall back to basic fetch when needed
+- [x] Parse thumbnail, caption, creator name
+- [x] Save data in database
 
 ## P1: Post classification
 - Write caption rule checks for type tags
